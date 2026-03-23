@@ -1,0 +1,128 @@
+openapi: 3.0.0
+info:
+  title: Blog API
+  description: API backend pour gérer un blog simple
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api
+
+paths:
+  /articles:
+    get:
+      summary: Récupérer tous les articles
+      parameters:
+        - in: query
+          name: categorie
+          schema:
+            type: string
+        - in: query
+          name: auteur
+          schema:
+            type: string
+        - in: query
+          name: date
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Liste des articles
+
+    post:
+      summary: Créer un article
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - titre
+                - contenu
+                - auteur
+                - categorie
+              properties:
+                titre:
+                  type: string
+                contenu:
+                  type: string
+                auteur:
+                  type: string
+                categorie:
+                  type: string
+                tags:
+                  type: string
+      responses:
+        '201':
+          description: Article créé avec succès
+        '400':
+          description: Données manquantes
+
+  /articles/search:
+    get:
+      summary: Rechercher des articles
+      parameters:
+        - in: query
+          name: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Articles correspondants
+
+  /articles/{id}:
+    get:
+      summary: Récupérer un article par ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Article trouvé
+        '404':
+          description: Article non trouvé
+
+    put:
+      summary: Modifier un article
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                titre:
+                  type: string
+                contenu:
+                  type: string
+                categorie:
+                  type: string
+                tags:
+                  type: string
+      responses:
+        '200':
+          description: Article modifié
+        '404':
+          description: Article non trouvé
+
+    delete:
+      summary: Supprimer un article
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Article supprimé
+        '404':
+          description: Article non trouvé
